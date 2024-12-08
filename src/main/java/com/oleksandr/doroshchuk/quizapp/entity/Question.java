@@ -1,4 +1,4 @@
-package com.oleksandr.doroshchuk.quizapp;
+package com.oleksandr.doroshchuk.quizapp.entity;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;

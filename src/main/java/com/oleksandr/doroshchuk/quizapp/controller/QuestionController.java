@@ -38,8 +38,13 @@ public class QuestionController {
     }
     
     @PostMapping("category")
-    public ResponseEntity<Question> postMethodName(@RequestBody Question question) {
-        return questionService.save(question);
+    public ResponseEntity<Question> saveQuestion (@RequestBody Question question) {
+        return questionService.saveOne(question);
+    }
+
+    @PostMapping(path="categories")
+    public ResponseEntity<List<Question>> saveQuestions(@RequestBody List<Question> questions) {
+        return questionService.saveMany(questions);
     }
 
 

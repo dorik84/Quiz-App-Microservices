@@ -7,8 +7,8 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
-import com.oleksandr.doroshchuk.quizapp.Question;
 import com.oleksandr.doroshchuk.quizapp.dao.QuestionDao;
+import com.oleksandr.doroshchuk.quizapp.entity.Question;
 
 @Service
 public class QuestionService {
@@ -25,7 +25,11 @@ public class QuestionService {
        
     }
 
-    public ResponseEntity<Question> save(Question question) {
+    public ResponseEntity<Question> saveOne(Question question) {
         return new ResponseEntity<>(questionDao.save(question),HttpStatus.CREATED);
+    }
+
+    public ResponseEntity<List<Question>> saveMany(List<Question> questions) {
+        return new ResponseEntity<>(questionDao.saveAll(questions),HttpStatus.CREATED);
     }
 }

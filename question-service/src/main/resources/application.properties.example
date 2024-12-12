@@ -1,0 +1,7 @@
+spring.application.name=question-service
+
+spring.datasource.url=
+spring.datasource.username=q
+spring.datasource.password=
+spring.jpa.hibernate.ddl-auto=update
+spring.thymeleaf.cache=false

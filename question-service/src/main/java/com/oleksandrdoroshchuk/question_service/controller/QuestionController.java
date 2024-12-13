@@ -3,6 +3,8 @@ package com.oleksandrdoroshchuk.question_service.controller;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.oleksandrdoroshchuk.question_service.entity.Question;
+import com.oleksandrdoroshchuk.question_service.model.QuestionStripper;
+import com.oleksandrdoroshchuk.question_service.model.Response;
 import com.oleksandrdoroshchuk.question_service.service.QuestionService;
 
 import java.util.List;
@@ -16,6 +18,8 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestParam;
+
 
 
 
@@ -47,6 +51,22 @@ public class QuestionController {
         return questionService.saveMany(questions);
     }
 
+    @GetMapping("generate")
+    public ResponseEntity<List<Integer>> getQuizQuestions(@RequestParam String category, @RequestParam Integer numQuestions ) {
+        return questionService.getQuizQuestions(category,numQuestions);
+    }
+
+    @GetMapping("getQuestions")
+    public ResponseEntity<List<QuestionStripper>> getQuestionsFromId(@RequestBody List<Integer> questionIds) {
+        return questionService.getQuestionsFromId(questionIds);
+    }
+    
+    
+    @PostMapping("getScore")
+    public ResponseEntity<Integer> gerScore(@RequestBody List<Response> responses) {
+        return questionService.getScore(responses);
+    }
+    
 
     @ExceptionHandler(Exception.class) 
     public ResponseEntity<String> handleException(Exception e) { 
@@ -54,4 +74,5 @@ public class QuestionController {
         return new ResponseEntity<>("An error occurred: " + e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR); }
     
     
+
 }

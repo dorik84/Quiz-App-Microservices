@@ -7,7 +7,7 @@ import com.oleksandrdoroshchuk.question_service.entity.Question;
 import lombok.Data;
 
 @Data
-public class QuestionWrapper {
+public class QuestionStripper {
     private Integer id;
 
     private String option1;
@@ -15,7 +15,7 @@ public class QuestionWrapper {
     private String option3;
     private String questionTitle;
 
-    public QuestionWrapper(Question question){
+    public QuestionStripper(Question question){
         this.id = question.getId();
         this.option1 = question.getOption1();
         this.option2 = question.getOption2();

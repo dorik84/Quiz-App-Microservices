@@ -1,6 +1,8 @@
 package com.oleksandrdoroshchuk.question_service.service;
 
 import java.util.List;
+import java.util.Optional;
+import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -9,6 +11,8 @@ import org.springframework.stereotype.Service;
 
 import com.oleksandrdoroshchuk.question_service.dao.QuestionDao;
 import com.oleksandrdoroshchuk.question_service.entity.Question;
+import com.oleksandrdoroshchuk.question_service.model.QuestionStripper;
+import com.oleksandrdoroshchuk.question_service.model.Response;
 
 
 
@@ -34,4 +38,34 @@ public class QuestionService {
     public ResponseEntity<List<Question>> saveMany(List<Question> questions) {
         return new ResponseEntity<>(questionDao.saveAll(questions),HttpStatus.CREATED);
     }
+
+    public ResponseEntity<List<Integer>> getQuizQuestions(String category, Integer numQuestions) {
+        List<Integer> questionIds = questionDao.findRandomQuestionsByCategory(category,numQuestions);
+        return new ResponseEntity<>(questionIds, HttpStatus.OK);
+        
+    }
+
+    public ResponseEntity<List<QuestionStripper>> getQuestionsFromId(List<Integer> questionIds) {
+        List<QuestionStripper> qws = questionIds.stream()
+            .map(id -> questionDao.findById(id))
+            .filter(Optional::isPresent)
+            .map(Optional::get)
+            .map(QuestionStripper::new)
+            .collect(Collectors.toList());
+        return new ResponseEntity<List<QuestionStripper>>(qws, HttpStatus.OK);
+    }
+
+    public ResponseEntity<Integer> getScore(List<Response> responses) {
+        Integer score=0;
+
+        for (Response res : responses){
+            String rightAnswer = questionDao.findById(res.getId()).get().getAnswer();
+            if (res.getResponse().equals(rightAnswer)){
+                score++;
+            }
+        }
+        return new ResponseEntity<Integer>(score,HttpStatus.OK);
+    }
+
+
 }
